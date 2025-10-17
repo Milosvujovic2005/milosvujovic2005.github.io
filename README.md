@@ -1,364 +1,414 @@
-Skip to content
-Navigation Menu
-Milosvujovic2005
-milosvujovic2005.github.io
- 
-Type / to search
-Code
-Issues
-Pull requests
-Actions
-Projects
-1
-Security
-Insights
-Settings
-Owner avatar
-milosvujovic2005.github.io
-Public
-Milosvujovic2005/milosvujovic2005.github.io
+# Yes Services — Quote Website (React)
 
-t
-Name		
-Milosvujovic2005
-Milosvujovic2005
-Implement Yes Services website with forms
-5d7ef98
- · 
-12 minutes ago
-README.md
-Implement Yes Services website with forms
-12 minutes ago
-Repository files navigation
-README
-import React, { useState } from "react"; import PropTypes from "prop-types";
+This repository contains a simple React app for **Yes Services** — a small quote/lead capture site for Cleaning, Moving & Storage, Disposal, and Car Detailing.
 
-// Simple submit simulation (replace with real API/email integration) function submitQuote(data) { console.log("Quote submitted:", data); // Friendly confirmation to user alert(Thank you, ${data.name || 'Customer'}! Your quote has been submitted. We'll contact you at ${data.email || 'your email'} soon.); }
+It uses Create React App structure. The forms simulate quote submission by logging to the console and showing an alert. You can integrate an email/backend service (EmailJS, Firebase, serverless function) to send/record quotes.
 
-export default function YesServicesWebsite() { const brand = "#FF007F"; const [tab, setTab] = useState("cleaning");
+---
 
-const bubbleStyle = { backgroundColor: brand, backgroundImage: "radial-gradient(circle at 20% 30%, white 10%, transparent 11%), radial-gradient(circle at 80% 20%, white 8%, transparent 9%), radial-gradient(circle at 60% 70%, white 12%, transparent 13%)", backgroundSize: "100% 100%", };
+## Files to create
 
-return (
+Create a new project folder and add the following files with the exact contents.
 
-  <header className="bg-white shadow-sm" role="banner">
-    <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        <div
-          className="w-12 h-12 rounded-md flex items-center justify-center text-white font-bold text-2xl"
-          style={{ background: brand }}
-        >
-          Yes.
+### 1) `package.json`
+You can generate this with `npx create-react-app` but here's minimal info if you need to paste:
+
+```json
+{
+  "name": "yes-services",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  }
+}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yes. Services</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+import React from "react";
+import { createRoot } from "react-dom/client";
+import YesServicesWebsite from "./YesServicesWebsite";
+import "./index.css";
+
+const root = createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <YesServicesWebsite />
+  </React.StrictMode>
+);
+/* Minimal CSS so Create React App default is not required.
+   You can customize or add Tailwind if you prefer. */
+body {
+  margin: 0;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #fff;
+  color: #111827;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+}
+input, select, textarea {
+  font-family: inherit;
+}
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+
+// Replace submitQuote with a real backend/email integration when ready.
+function submitQuote(data) {
+  console.log("Quote submitted:", data);
+  alert(`Thank you, ${data.name || "Customer"}! Your ${data.type} quote has been submitted. We'll reach out to ${data.email || "your email"} soon.`);
+}
+
+export default function YesServicesWebsite() {
+  const brand = "#FF007F";
+  const [tab, setTab] = useState("moving");
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#fff" }}>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" />
+
+      <header style={{ background: "#fff", padding: 16, boxShadow: "0 1px 2px rgba(0,0,0,0.06)" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 40, height: 40, borderRadius: 8, background: brand, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700 }}>Yes.</div>
+          <div>
+            <div style={{ fontWeight: 700 }}>Yes. SERVICES</div>
+            <div style={{ fontSize: 12, color: "#6b7280" }}>Amateur prices, Professional results</div>
+          </div>
         </div>
-        <div>
-          <div className="text-lg font-semibold">Yes. SERVICES</div>
-          <div className="text-xs text-gray-500">Amateur prices, Professional results</div>
+      </header>
+
+      <main style={{ maxWidth: 1100, margin: "24px auto", padding: "0 16px" }}>
+        <section style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 6px 18px rgba(0,0,0,0.04)" }}>
+          <h1 style={{ fontSize: 28, margin: 0 }}>Get a Quote</h1>
+
+          <nav style={{ marginTop: 16, display: "flex", gap: 8, borderBottom: "1px solid #e5e7eb", paddingBottom: 8 }}>
+            <TabButton active={tab === "moving"} onClick={() => setTab("moving")} brand={brand}>Moving & Storage</TabButton>
+            <TabButton active={tab === "disposal"} onClick={() => setTab("disposal")} brand={brand}>Disposal Service</TabButton>
+            <TabButton active={tab === "cleaning"} onClick={() => setTab("cleaning")} brand={brand}>Cleaning Service</TabButton>
+            <TabButton active={tab === "car"} onClick={() => setTab("car")} brand={brand}>Car Detailing</TabButton>
+          </nav>
+
+          <div style={{ marginTop: 20 }}>
+            {tab === "moving" && <MovingForm brand={brand} />}
+            {tab === "disposal" && <DisposalForm brand={brand} />}
+            {tab === "cleaning" && <CleaningForm brand={brand} />}
+            {tab === "car" && <CarDetailingForm brand={brand} />}
+          </div>
+        </section>
+      </main>
+
+      <footer style={{ marginTop: 24, borderTop: "1px solid #e6e6e6", background: "#fff", padding: 16 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, background: brand, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>Y</div>
+            <div>
+              <div style={{ fontWeight: 700 }}>Yes. SERVICES</div>
+              <div style={{ fontSize: 12, color: "#6b7280" }}>© {new Date().getFullYear()} Yes. Services</div>
+            </div>
+          </div>
+          <div style={{ fontSize: 14, color: "#6b7280" }}>yesservices.com • quotes@yesservices.com</div>
         </div>
-      </div>
+      </footer>
     </div>
-  </header>
+  );
+}
 
-  <main className="max-w-6xl mx-auto px-6 py-12" role="main">
-    <section className="rounded-2xl shadow p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center bg-white">
+/* ---------- Helper components & forms ---------- */
+
+function TabButton({ children, active, onClick, brand }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      style={{
+        padding: "8px 12px",
+        borderRadius: 8,
+        background: active ? brand : "transparent",
+        color: active ? "#fff" : "#374151",
+        fontWeight: 600,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+/* Contact section used by forms */
+function ContactSection({ contact, setContact }) {
+  return (
+    <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+      <input required placeholder="Full name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} style={inputStyle()} />
+      <input required placeholder="Phone number" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} style={inputStyle()} />
+      <input required placeholder="Email address" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} style={{ ...inputStyle(), gridColumn: "1 / -1" }} />
+      <select value={contact.time} onChange={(e) => setContact({ ...contact, time: e.target.value })} style={inputStyle()}>
+        <option>Morning</option>
+        <option>Noon</option>
+        <option>Afternoon</option>
+      </select>
+      <input type="date" value={contact.date} onChange={(e) => setContact({ ...contact, date: e.target.value })} style={inputStyle()} />
+      <label style={{ gridColumn: "1 / -1", display: "flex", alignItems: "center", gap: 8 }}>
+        <input type="checkbox" checked={contact.agree} onChange={(e) => setContact({ ...contact, agree: e.target.checked })} />
+        <span style={{ fontSize: 14 }}>I agree to the terms and conditions</span>
+      </label>
+    </div>
+  );
+}
+
+/* ---------------- Cleaning Form ---------------- */
+function CleaningForm({ brand }) {
+  const [address, setAddress] = useState("");
+  const [size, setSize] = useState("studio");
+  const [services, setServices] = useState({});
+  const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false });
+
+  const baseCleaningOptions = { sweeping: 10, windows: 15, sheets: 12, dusting: 12, kitchen: 25, bathroom: 25, deep: 50 };
+  const sizeMultiplier = { studio: 1, "1br": 1.3, "2br": 1.6, "3br": 2, house: 2.6 };
+  const cleaningOptions = Object.fromEntries(Object.entries(baseCleaningOptions).map(([k, v]) => [k, Math.round(v * (sizeMultiplier[size] || 1))]));
+
+  const toggle = (k) => setServices((s) => ({ ...s, [k]: !s[k] }));
+  const price = Object.keys(services).reduce((acc, k) => (services[k] ? acc + cleaningOptions[k] : acc), 0);
+
+  function handle(e) {
+    e.preventDefault();
+    submitQuote({ type: "cleaning", address, size, services, price, ...contact });
+  }
+
+  return (
+    <form onSubmit={handle}>
       <div>
-        <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">Clean moves, clear prices.</h1>
-        <p className="mt-4 max-w-xl text-gray-700">
-          Yes. SERVICES offers transparent, upfront pricing for cleaning, moving, storage, and disposal.
-          Pick the exact services or items you want and get a firm quote — no hourly surprises.
-        </p>
+        <label style={{ fontWeight: 600 }}>Address</label>
+        <input required value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter address" style={inputStyle()} />
       </div>
-      <div className="rounded-md overflow-hidden bg-white h-64 flex items-center justify-center">
-        <img
-          alt="cleaning and moving team at job site"
-          src="https://files.oaiusercontent.com/file_00000000b54461f58478cda75912aca3/A_digital_photograph_in_a_split-screen_format_disp.png"
-          className="object-cover h-full w-full opacity-90 rounded-md"
-        />
+
+      <div style={{ marginTop: 8 }}>
+        <label style={{ fontWeight: 600 }}>Apartment size</label>
+        <select value={size} onChange={(e) => setSize(e.target.value)} style={inputStyle()}>
+          <option value="studio">Studio</option>
+          <option value="1br">1 Bedroom</option>
+          <option value="2br">2 Bedrooms</option>
+          <option value="3br">3 Bedrooms</option>
+          <option value="house">House</option>
+        </select>
       </div>
-    </section>
 
-    <section className="mt-12 bg-white p-6 rounded-2xl shadow">
-      <h2 className="text-2xl font-bold">Get a Quote</h2>
-
-      <div className="flex gap-2 mt-4 border-b pb-2" role="tablist">
-        {['cleaning', 'moving', 'disposal'].map((type) => (
-          <button
-            key={type}
-            onClick={() => setTab(type)}
-            className={`px-3 py-2 rounded ${tab === type ? 'text-white' : 'text-gray-700'}`}
-            style={tab === type ? { background: brand } : {}}
-            aria-selected={tab === type}
-            aria-controls={`${type}-form`}
-          >
-            {type === 'cleaning' ? 'Cleaning' : type === 'moving' ? 'Moving & Storage' : 'Disposal Service'}
-          </button>
+      <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        {Object.entries(cleaningOptions).map(([k, v]) => (
+          <label key={k} style={{ display: "flex", gap: 8, padding: 8, borderRadius: 8, background: "#fff", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <input type="checkbox" checked={!!services[k]} onChange={() => toggle(k)} />
+              <div style={{ textTransform: "capitalize" }}>{k}</div>
+            </div>
+            <div style={{ color: "#6b7280" }}>${v}</div>
+          </label>
         ))}
       </div>
 
-      <div className="mt-6">
-        {tab === 'cleaning' && <CleaningForm brand={brand} />}
-        {tab === 'moving' && <MovingForm brand={brand} />}
-        {tab === 'disposal' && <DisposalForm brand={brand} />}
-      </div>
-    </section>
-  </main>
+      <ContactSection contact={contact} setContact={setContact} />
 
-  <footer className="mt-12 bg-white border-t" role="contentinfo">
-    <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div className="flex items-center gap-3">
-        <div
-          className="w-10 h-10 rounded flex items-center justify-center text-white font-bold"
-          style={{ background: brand }}
-        >
-          Yes.
-        </div>
-        <div>
-          <div className="text-sm font-semibold">Yes. SERVICES</div>
-          <div className="text-xs text-gray-500">© {new Date().getFullYear()} Yes. Services</div>
-        </div>
-      </div>
-      <div className="text-sm text-gray-600">yesservices.com • quotes@yesservices.com</div>
-    </div>
-  </footer>
-</div>
-); }
-
-function ContactSection({ contact, setContact }) { return (
-
-<input type="text" placeholder="Full Name" value={contact.name} onChange={(e) => setContact({ ...contact, name: e.target.value })} className="border p-2 rounded" required />
-  <input
-    type="tel"
-    placeholder="Phone Number"
-    value={contact.phone}
-    onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-    className="border p-2 rounded"
-    required
-  />
-
-  <input
-    type="email"
-    placeholder="Email Address"
-    value={contact.email}
-    onChange={(e) => setContact({ ...contact, email: e.target.value })}
-    className="border p-2 rounded sm:col-span-2"
-    required
-  />
-
-  <label className="sm:col-span-2 block">
-    <span className="font-semibold text-sm">Preferred Service Time</span>
-    <select
-      value={contact.time}
-      onChange={(e) => setContact({ ...contact, time: e.target.value })}
-      className="mt-2 w-full border p-2 rounded"
-    >
-      <option value="Morning">Morning</option>
-      <option value="Noon">Noon</option>
-      <option value="Afternoon">Afternoon</option>
-    </select>
-  </label>
-
-  <label className="sm:col-span-2 block">
-    <span className="font-semibold text-sm">Preferred Date</span>
-    <input
-      type="date"
-      value={contact.date}
-      onChange={(e) => setContact({ ...contact, date: e.target.value })}
-      className="mt-2 w-full border p-2 rounded"
-    />
-  </label>
-
-  <label className="sm:col-span-2 flex items-center gap-2">
-    <input
-      type="checkbox"
-      checked={contact.agree}
-      onChange={(e) => setContact({ ...contact, agree: e.target.checked })}
-      required
-    />
-    I agree to the terms and conditions
-  </label>
-</div>
-); }
-
-ContactSection.propTypes = { contact: PropTypes.object.isRequired, setContact: PropTypes.func.isRequired, };
-
-function CleaningForm({ brand }) { const [address, setAddress] = useState(""); const [size, setSize] = useState("studio"); const [services, setServices] = useState({}); const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false });
-
-const baseCleaningOptions = { sweeping: 10, windows: 15, sheets: 12, dusting: 12, kitchen: 25, bathroom: 25, deep: 50 }; const sizeMultiplier = { studio: 1, '1br': 1.3, '2br': 1.6, '3br': 2, house: 2.6 }; const cleaningOptions = Object.fromEntries( Object.entries(baseCleaningOptions).map(([o, p]) => [o, Math.round(p * (sizeMultiplier[size] || 1))]) );
-
-const toggleService = (o) => setServices((p) => ({ ...p, [o]: !p[o] })); const price = Object.keys(services).reduce((a, k) => (services[k] ? a + cleaningOptions[k] : a), 0);
-
-const handleSubmit = (e) => { e.preventDefault(); submitQuote({ type: 'cleaning', address, size, services, price, ...contact }); };
-
-return (
-
-Address <input id="address" type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="mt-2 w-full border p-2 rounded" placeholder="Enter your address" required />
-  <label htmlFor="size" className="font-semibold text-sm mt-4 block">
-    Apartment Size
-  </label>
-  <select id="size" value={size} onChange={(e) => setSize(e.target.value)} className="mt-2 w-full border p-2 rounded">
-    <option value="studio">Studio</option>
-    <option value="1br">1 Bedroom</option>
-    <option value="2br">2 Bedrooms</option>
-    <option value="3br">3 Bedrooms</option>
-    <option value="house">House</option>
-  </select>
-
-  <div className="mt-4 grid sm:grid-cols-2 gap-2">
-    {Object.entries(cleaningOptions).map(([o, p]) => (
-      <label key={o} className="flex items-center gap-2 border p-2 rounded bg-white">
-        <input type="checkbox" checked={!!services[o]} onChange={() => toggleService(o)} />
-        <span className="capitalize flex-1">{o}</span>
-        <span className="text-xs text-gray-500">${p}</span>
-      </label>
-    ))}
-  </div>
-
-  <ContactSection contact={contact} setContact={setContact} />
-
-  <div className="mt-4 font-semibold text-lg">Estimated Price: ${price || 0}</div>
-  <button type="submit" className="mt-4 px-4 py-2 text-white rounded" style={{ background: brand }}>
-    Submit Quote
-  </button>
-</form>
-); }
+      <div style={{ marginTop: 12, fontWeight: 700 }}>Estimated Price: ${price}</div>
+      <button type="submit" style={{ marginTop: 8, background: brand, color: "#fff", padding: "8px 12px", borderRadius: 8 }}>Submit Quote</button>
+    </form>
+  );
+}
 
 CleaningForm.propTypes = { brand: PropTypes.string.isRequired };
 
-function MovingForm({ brand }) { const [pickup, setPickup] = useState(""); const [dropoff, setDropoff] = useState(""); const [size, setSize] = useState("studio"); const [packing, setPacking] = useState(false); const [storage, setStorage] = useState(false); const [moveOutCleaning, setMoveOutCleaning] = useState(false); const [disposal, setDisposal] = useState(false); const [items, setItems] = useState({}); const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false });
+/* ---------------- Moving Form ---------------- */
+function MovingForm({ brand }) {
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
+  const [size, setSize] = useState("studio");
+  const [packing, setPacking] = useState(false);
+  const [storage, setStorage] = useState(false);
+  const [moveOutCleaning, setMoveOutCleaning] = useState(false);
+  const [disposal, setDisposal] = useState(false);
+  const [items, setItems] = useState({});
+  const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false });
 
-const itemOptions = { bed: 40, table: 30, sofa: 35, dresser: 20, chair: 8, box: 4, mirror: 6, bike: 12, tv: 25, desk: 20, wardrobe: 40, rug: 10, bookshelf: 18, };
+  const itemOptions = {
+    bed: 40, table: 30, sofa: 35, dresser: 20, chair: 8, box: 4, mirror: 6, bike: 12, tv: 25, desk: 20, wardrobe: 40, rug: 10, bookshelf: 18,
+    piano: 200, poolTable: 180, refrigerator: 50, washer: 45, dryer: 45, oven: 40, stove: 35, sectional: 60, gymEquipment: 70, officeChair: 20, painting: 10, chandelier: 30, armoire: 80, nightstand: 12, coffeeTable: 15
+  };
 
-const changeQty = (i, d) => setItems((p) => ({ ...p, [i]: Math.max(0, (p[i] || 0) + d) }));
+  const changeQty = (k, d) => setItems((p) => ({ ...p, [k]: Math.max(0, (p[k] || 0) + d) }));
 
-const calcPrice = () => { let totalVolume = Object.entries(items).reduce((a, [i, q]) => a + (itemOptions[i] || 0) * q, 0); let price = totalVolume * 1.5; if (packing) price *= 1.25; if (storage) price += 50; if (moveOutCleaning) price += 60; if (disposal) price += 80; const sizeAdd = { studio: 0, '1br': 20, '2br': 50, '3br': 90, house: 150 }[size] || 0; return Math.round(price + sizeAdd); };
+  function calcPrice() {
+    let volume = Object.entries(items).reduce((a, [k, v]) => a + (itemOptions[k] || 0) * v, 0);
+    let price = volume * 1.5;
+    if (packing) price *= 1.25;
+    if (storage) price += 50;
+    if (moveOutCleaning) price += 60;
+    if (disposal) price += 80;
+    const sizeAdd = { studio: 0, "1br": 20, "2br": 50, "3br": 90, house: 150 }[size] || 0;
+    return Math.round(price + sizeAdd);
+  }
 
-const price = calcPrice(); const handleSubmit = (e) => { e.preventDefault(); submitQuote({ type: 'moving', pickup, dropoff, size, items, packing, storage, moveOutCleaning, disposal, price, ...contact }); };
+  const price = calcPrice();
 
-return ( Pickup Address <input type="text" value={pickup} onChange={(e) => setPickup(e.target.value)} className="mt-2 w-full border p-2 rounded" placeholder="Enter pickup address" required />
+  function handle(e) {
+    e.preventDefault();
+    submitQuote({ type: "moving", pickup, dropoff, size, items, packing, storage, moveOutCleaning, disposal, price, ...contact });
+  }
 
-  <label className="font-semibold text-sm mt-4 block">Dropoff Address</label>
-  <input
-    type="text"
-    value={dropoff}
-    onChange={(e) => setDropoff(e.target.value)}
-    className="mt-2 w-full border p-2 rounded"
-    placeholder="Enter dropoff address"
-    required
-  />
-
-  <label htmlFor="size" className="font-semibold text-sm mt-4 block">
-    Apartment Size
-  </label>
-  <select id="size" value={size} onChange={(e) => setSize(e.target.value)} className="mt-2 w-full border p-2 rounded">
-    <option value="studio">Studio</option>
-    <option value="1br">1 Bedroom</option>
-    <option value="2br">2 Bedrooms</option>
-    <option value="3br">3 Bedrooms</option>
-    <option value="house">House</option>
-  </select>
-
-  <div className="mt-4 grid sm:grid-cols-2 gap-2">
-    {Object.entries(itemOptions).map(([i]) => (
-      <div key={i} className="flex items-center justify-between border p-2 rounded bg-white">
-        <span className="capitalize">{i}</span>
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={() => changeQty(i, -1)} className="px-2 border rounded">-</button>
-          <span>{items[i] || 0}</span>
-          <button type="button" onClick={() => changeQty(i, 1)} className="px-2 border rounded">+</button>
-        </div>
+  return (
+    <form onSubmit={handle}>
+      <div>
+        <label style={{ fontWeight: 600 }}>Pickup address</label>
+        <input required value={pickup} onChange={(e) => setPickup(e.target.value)} placeholder="Enter pickup address" style={inputStyle()} />
       </div>
-    ))}
-  </div>
 
-  <label className="flex items-center gap-2 mt-4">
-    <input type="checkbox" checked={packing} onChange={(e) => setPacking(e.target.checked)} />Need packing service
-  </label>
-  <label className="flex items-center gap-2 mt-2">
-    <input type="checkbox" checked={storage} onChange={(e) => setStorage(e.target.checked)} />Need storage
-  </label>
-  <label className="flex items-center gap-2 mt-2">
-    <input type="checkbox" checked={moveOutCleaning} onChange={(e) => setMoveOutCleaning(e.target.checked)} />Need cleaning (quick move-out cleaning)
-  </label>
-  <label className="flex items-center gap-2 mt-2">
-    <input type="checkbox" checked={disposal} onChange={(e) => setDisposal(e.target.checked)} />Add disposal service
-  </label>
+      <div style={{ marginTop: 8 }}>
+        <label style={{ fontWeight: 600 }}>Dropoff address</label>
+        <input required value={dropoff} onChange={(e) => setDropoff(e.target.value)} placeholder="Enter dropoff address" style={inputStyle()} />
+      </div>
 
-  <ContactSection contact={contact} setContact={setContact} />
+      <div style={{ marginTop: 8 }}>
+        <label style={{ fontWeight: 600 }}>Apartment size</label>
+        <select value={size} onChange={(e) => setSize(e.target.value)} style={inputStyle()}>
+          <option value="studio">Studio</option>
+          <option value="1br">1 Bedroom</option>
+          <option value="2br">2 Bedrooms</option>
+          <option value="3br">3 Bedrooms</option>
+          <option value="house">House</option>
+        </select>
+      </div>
 
-  <div className="mt-4 font-semibold text-lg">Estimated Price: ${price || 0}</div>
-  <button type="submit" className="mt-4 px-4 py-2 text-white rounded" style={{ background: brand }}>
-    Submit Quote
-  </button>
-</form>
-); }
+      <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        {Object.keys(itemOptions).map((k) => (
+          <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 8, borderRadius: 8, background: "#fff" }}>
+            <div style={{ textTransform: "capitalize" }}>{k}</div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <button type="button" onClick={() => changeQty(k, -1)} style={smallBtn()}>-</button>
+              <div>{items[k] || 0}</div>
+              <button type="button" onClick={() => changeQty(k, 1)} style={smallBtn()}>+</button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+        <label style={{ display: "flex", gap: 8, alignItems: "center" }}><input type="checkbox" checked={packing} onChange={(e) => setPacking(e.target.checked)} /> Need packing service</label>
+        <label style={{ display: "flex", gap: 8, alignItems: "center" }}><input type="checkbox" checked={storage} onChange={(e) => setStorage(e.target.checked)} /> Need storage</label>
+        <label style={{ display: "flex", gap: 8, alignItems: "center" }}><input type="checkbox" checked={moveOutCleaning} onChange={(e) => setMoveOutCleaning(e.target.checked)} /> Need cleaning (quick move-out)</label>
+        <label style={{ display: "flex", gap: 8, alignItems: "center" }}><input type="checkbox" checked={disposal} onChange={(e) => setDisposal(e.target.checked)} /> Add disposal service</label>
+      </div>
+
+      <ContactSection contact={contact} setContact={setContact} />
+
+      <div style={{ marginTop: 12, fontWeight: 700 }}>Estimated Price: ${price}</div>
+      <button type="submit" style={{ marginTop: 8, background: brand, color: "#fff", padding: "8px 12px", borderRadius: 8 }}>Submit Quote</button>
+    </form>
+  );
+}
 
 MovingForm.propTypes = { brand: PropTypes.string.isRequired };
 
-function DisposalForm({ brand }) { const [address, setAddress] = useState(""); const [items, setItems] = useState({}); const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false }); const disposalOptions = { furniture: 40, mattress: 30, electronics: 25, appliances: 35, boxes: 10, trash: 15 };
+/* --------------- Disposal Form --------------- */
+function DisposalForm({ brand }) {
+  const [address, setAddress] = useState("");
+  const [items, setItems] = useState({});
+  const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false });
+  const disposalOptions = { furniture: 40, mattress: 30, electronics: 25, appliances: 35, boxes: 10, trash: 15 };
 
-const changeQty = (i, d) => setItems((p) => ({ ...p, [i]: Math.max(0, (p[i] || 0) + d) })); const price = Object.entries(items).reduce((a, [i, q]) => a + (disposalOptions[i] || 0) * q, 0); const handleSubmit = (e) => { e.preventDefault(); submitQuote({ type: 'disposal', address, items, price, ...contact }); };
+  const changeQty = (k, d) => setItems((p) => ({ ...p, [k]: Math.max(0, (p[k] || 0) + d) }));
+  const price = Object.entries(items).reduce((a, [k, v]) => a + (disposalOptions[k] || 0) * v, 0);
 
-return ( Address <input id="address" type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="mt-2 w-full border p-2 rounded" placeholder="Enter address for disposal" required />
+  function handle(e) {
+    e.preventDefault();
+    submitQuote({ type: "disposal", address, items, price, ...contact });
+  }
 
-  <div className="mt-4 grid sm:grid-cols-2 gap-2">
-    {Object.entries(disposalOptions).map(([i, p]) => (
-      <div key={i} className="flex items-center justify-between border p-2 rounded bg-white">
-        <span className="capitalize">{i}</span>
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={() => changeQty(i, -1)} className="px-2 border rounded">-</button>
-          <span>{items[i] || 0}</span>
-          <button type="button" onClick={() => changeQty(i, 1)} className="px-2 border rounded">+</button>
-        </div>
-        <span className="text-xs text-gray-500">${p}</span>
+  return (
+    <form onSubmit={handle}>
+      <div>
+        <label style={{ fontWeight: 600 }}>Address</label>
+        <input required value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter address for disposal" style={inputStyle()} />
       </div>
-    ))}
-  </div>
 
-  <ContactSection contact={contact} setContact={setContact} />
+      <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        {Object.entries(disposalOptions).map(([k, v]) => (
+          <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 8, borderRadius: 8, background: "#fff" }}>
+            <div style={{ textTransform: "capitalize" }}>{k}</div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <button type="button" onClick={() => changeQty(k, -1)} style={smallBtn()}>-</button>
+              <div>{items[k] || 0}</div>
+              <button type="button" onClick={() => changeQty(k, 1)} style={smallBtn()}>+</button>
+            </div>
+            <div style={{ color: "#6b7280" }}>${v}</div>
+          </div>
+        ))}
+      </div>
 
-  <div className="mt-4 font-semibold text-lg">Estimated Price: ${price || 0}</div>
-  <button type="submit" className="mt-4 px-4 py-2 text-white rounded" style={{ background: brand }}>
-    Submit Quote
-  </button>
-</form>
-); }
+      <ContactSection contact={contact} setContact={setContact} />
+
+      <div style={{ marginTop: 12, fontWeight: 700 }}>Estimated Price: ${price}</div>
+      <button type="submit" style={{ marginTop: 8, background: brand, color: "#fff", padding: "8px 12px", borderRadius: 8 }}>Submit Quote</button>
+    </form>
+  );
+}
 
 DisposalForm.propTypes = { brand: PropTypes.string.isRequired };
 
+/* ----------- Car Detailing Form ----------- */
+function CarDetailingForm({ brand }) {
+  const [location, setLocation] = useState("");
+  const [services, setServices] = useState({ exterior: false, interior: false, engine: false, full: false });
+  const [contact, setContact] = useState({ name: "", phone: "", email: "", time: "Morning", date: "", agree: false });
 
-About
+  const opts = { exterior: 40, interior: 60, engine: 50, full: 120 };
+  const price = Object.entries(services).reduce((a, [k, v]) => a + (v ? opts[k] : 0), 0);
 
-No description, website, or topics provided.
-Resources
- Readme
- Activity
-Stars
- 0 stars
-Watchers
- 0 watching
-Forks
- 0 forks
-Releases
+  function handle(e) {
+    e.preventDefault();
+    submitQuote({ type: "car detailing", location, services, price, ...contact });
+  }
 
-No releases published
-Create a new release
-Packages
+  return (
+    <form onSubmit={handle}>
+      <div>
+        <label style={{ fontWeight: 600 }}>Service location</label>
+        <input required value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Address or 'On-site'" style={inputStyle()} />
+      </div>
 
-No packages published
-Publish your first package
-Deployments
-1
+      <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+        {Object.entries(opts).map(([k, v]) => (
+          <label key={k} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <input type="checkbox" checked={!!services[k]} onChange={(e) => setServices((s) => ({ ...s, [k]: e.target.checked }))} />
+            <span style={{ textTransform: "capitalize" }}>{`${k} ($${v})`}</span>
+          </label>
+        ))}
+      </div>
 
- github-pages 2 minutes ago
-Footer
-© 2025 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Community
-Docs
-Contact
-Manage cookies
-Do not share my personal information
-New release · Milosvujovic2005/milosvujovic2005.github.io
+      <ContactSection contact={contact} setContact={setContact} />
+
+      <div style={{ marginTop: 12, fontWeight: 700 }}>Estimated Price: ${price}</div>
+      <button type="submit" style={{ marginTop: 8, background: brand, color: "#fff", padding: "8px 12px", borderRadius: 8 }}>Submit Quote</button>
+    </form>
+  );
+}
+
+CarDetailingForm.propTypes = { brand: PropTypes.string.isRequired };
+
+/* ---------- small helpers ---------- */
+const inputStyle = () => ({ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid #e5e7eb" });
+const smallBtn = () => ({ padding: "6px 8px", borderRadius: 6, border: "1px solid #e5e7eb", background: "#fff" });
