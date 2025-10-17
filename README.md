@@ -1,20 +1,3 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-
-// Replace submitQuote with a real backend/email integration when ready.
-function submitQuote(data) {
-  console.log("Quote submitted:", data);
-  alert(`Thank you, ${data.name || "Customer"}! Your ${data.type} quote has been submitted. We'll reach out to ${data.email || "your email"} soon.`);
-}
-
-export default function YesServicesWebsite() {
-  const brand = "#FF007F";
-  const [tab, setTab] = useState("moving");
-
-  return (
-    <div style={{ minHeight: "100vh", background: "#fff" }}>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" />
-
       <header style={{ background: "#fff", padding: 16, boxShadow: "0 1px 2px rgba(0,0,0,0.06)" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 40, height: 40, borderRadius: 8, background: brand, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700 }}>Yes.</div>
